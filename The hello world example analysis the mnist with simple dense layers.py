@@ -38,6 +38,7 @@ test_images=test_images.reshape((10000,
 
 test_images=test_images.astype('float32')/255
 
+
 #The sturctures of our neural network:
 
 #input: Dense layers with relu and 512 NN unions.
@@ -53,7 +54,6 @@ Neural_network=models.Sequential()
 Neural_network.add(layers.Dense(512,
                                 activation='relu',
                                 input_shape=(28*28,)))
-
 Neural_network.add(layers.Dense(10,
                                 activation='softmax'))
 
@@ -62,14 +62,16 @@ Neural_network.add(layers.Dense(10,
 Neural_network.compile(optimizer='rmsprop',
                        loss='categorical_crossentropy',
                        metrics=['accuracy'])
-
+print("Our DNN can be described by: ")
+Neural_network.summary()
 #We also need to label the input_images with categorical compiler.
-
 from keras.utils import to_categorical
 
 train_labels=to_categorical(train_labels)
 
 test_labels=to_categorical(test_labels)
+
+
 
 #Start to train our NN with 10 times.
 
@@ -79,7 +81,6 @@ history=Neural_network.fit(train_images,
                            batch_size=128)
 
 #Show the accuracy rate with each training.
-
 import matplotlib.pyplot as plt
 
 acc=history.history['acc']
@@ -103,7 +104,7 @@ plt.figure()
 
 plt.plot(epochs,
          loss,
-         'bo',
+         'g',
          label='Training loss quantity')
 
 plt.title('Training loss')
@@ -112,3 +113,4 @@ plt.legend()
 
 
 plt.show()
+
