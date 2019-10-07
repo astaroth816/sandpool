@@ -4,12 +4,12 @@ Created on Mon Oct  7 11:45:07 2019
 
 @author: andy3
 """
-
-
 import random
 import pygame
 import tkinter as tk
 from tkinter import messagebox
+
+
  
 class cube(object):
     rows = 20
@@ -201,7 +201,7 @@ def main():
             if s.body[x].pos in list(map(lambda z:z.pos,s.body[x+1:])):
                 print('得分:'
                       , len(s.body))
-                message_box('You lose', 'Ally你好菜!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+                message_box('You lose', 'Dear Ally you are suck <3')
                 s.reset((10,10))
                 break
  
