@@ -112,6 +112,9 @@ CNN.add(layers.Conv2D(64,
                         (3,3),
                         activation='relu'))
 
+CNN.add(layers.MaxPool2D((2,2)))
+\
+
 #The last Conv2D output 3D tensor(shape=(3,3,64)).Next, we need to trans it to next NN.
 
 #We flat the (28,28)->(784,).Because we need to put in DNN layers,so we need to flat the inputing tensor.
