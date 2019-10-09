@@ -114,3 +114,9 @@ plt.legend()
 
 plt.show()
 
+test_loss,test_acc=Neural_network.evaluate(test_images,test_labels)
+
+print("The accuary of test_images:",test_acc)
+
+print("The accuary of test_images:",test_loss)
+
