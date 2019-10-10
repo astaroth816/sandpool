@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 #################################################
-#此二元分類為將電影評論分類為正評或負評。利用Keras中的IMDB資料庫的資料來當作訓練資料。總共有25000個評論。
+#此二元分類為將電影評論分類為正評或負評。利用Keras中的IMDB資料庫的資料來當作訓練資料。總共有25000個評論。並給出好評價或差評價
 #
 #
 #
@@ -18,7 +18,7 @@ from keras.datasets import imdb
 
 #利用(train_data，train_labels)，(test_data，test_labels)的方式從imdb中讀取資料並放入這些位置。
 
-(train_data,train_labels),(test_data,test_labels)=imdb.load_data(num_words=10000)
+(train_data,train_labels),(test_data,test_labels)=imdb.load_data(num_words=5000)
 
 #匯入python中的numpy package並命名為np。
 

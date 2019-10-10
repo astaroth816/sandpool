@@ -1,10 +1,8 @@
-#從keras.datasets的package中匯入reuters的資料集#從keras.datasets的package中匯入reuters的資料集
+#從keras.datasets的package中匯入reuters的資料集，此神經網路的任務是自行分類46種不同的新聞主題
 
 from keras.datasets import reuters
 
-#從reuters資料集中讀取訓練資料，訓練標籤，測試資料，測試標籤
-
-(train_data,train_labels),(test_data,test_labels)=reuters.load_data(num_words=10000)
+(train_data, train_labels), (test_data, test_labels) = reuters.load_data(num_words=10000)
 
 #將函數'sequences'傳入維度為10000的雙層list中。
 import numpy as np
@@ -51,13 +49,13 @@ model=models.Sequential()
 
 #輸入層是隱藏層
 
-model.add(layers.Dense(32,
+model.add(layers.Dense(64,
                        activation='relu',
                        input_shape=(10000,)))
 
 #隱藏層
 
-model.add(layers.Dense(32,
+model.add(layers.Dense(64,
                        activation='relu'))
 
 #輸出層
