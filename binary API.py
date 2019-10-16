@@ -83,3 +83,43 @@ API_model.compile(optimizer="rmsprop",
                   loss="categorical_crossentropy",
                   metrics=['acc'])
 API_model.summary()
+
+##########Create the training data#############################
+import numpy as np
+
+num_samples=1000
+
+max_length=100
+
+###Create the "text" training data:1000 piece of data and each data has 100word.###
+text=np.random.randint(1,text_word_size,size=(num_samples,max_length))
+
+#[[2,23,54,......totaly 100 word],[...],[...],...total 1000 piece of data]
+print("The shape of text:",text.shape)
+
+###Create the "question" training data###
+question=np.random.randint(1,question_word_size,size=(num_samples,max_length))
+
+#print the question shape:
+print('The shape of question:',question.shape)
+
+###Create the "answer",we need one-hot encode ,total 1000 correct answer
+answers=np.zeros(shape=(num_samples,
+                        answer_word_size),dtype='int32')
+
+#let arbitary(random) one set 1
+for answer in answers:
+    answer[np.random.randint(answer_word_size)]=1
+
+#[[0,1,0,.....total 500 word],[...],[...],[...],..total 1000 list]
+
+#print the shape of answer:
+print('The shape of answer:',answers.shape)
+
+#Training method 1:use list method put in training sets
+history_list=API_model.fit([text,question],answers,epochs=10,batch_size=128)
+
+#Training method 2:use dict method put in training sets
+history_dict=API_model.fit({'text':text,'question':question},answers,epochs=10,batch_size=128)
+
+#Plot the history_list with acc and loss
