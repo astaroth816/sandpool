@@ -87,3 +87,7 @@ print('The shape of output:',output.shape)
 API_model=Model(x,output)
 
 API_model.summary()
+
+from keras.utils import plot_model
+
+plot_model(API_model,show_shapes=True,to_file='model.png')
