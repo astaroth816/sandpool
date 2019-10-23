@@ -15,14 +15,24 @@ Created on Mon Oct 21 10:59:53 2019
 #
 #######################################
 ###Download the analysze the training article.###
-import keras
+from __future__ import print_function
+from keras.callbacks import LambdaCallback
+from keras.models import Sequential
+from keras.layers import Dense
+from keras.layers import LSTM
+from keras.optimizers import RMSprop
+from keras.utils.data_utils import get_file
 import numpy as np
+import random
+import sys
+import io
 
-path=keras.utils.get_file(
-        'generatorsequence.txt',
-        origin='http://s3.amazonaws.com/text-datasets/nietzsche.txt')
-text=open(path,encoding="utf-8").read().lower()
-print('The number of words:',len(text))
+path = get_file(
+    'nietzsche.txt',
+    origin='https://s3.amazonaws.com/text-datasets/nietzsche.txt')
+with io.open(path, encoding='utf-8') as f:
+    text = f.read().lower()
+print('corpus length:', len(text))
 #######################################
 #
 #
@@ -52,37 +62,31 @@ for i in range(0,len(text)-max_word_union,step):
     
 print('The number of senquence:',len(sentences))
 
-chars=sorted(list(set(text)))
+chars = sorted(list(set(text)))
+char_indices = dict((c, i) for i, c in enumerate(chars))
+indices_char = dict((i, c) for i, c in enumerate(chars))
 
 print('Unique_word_union:',len(chars))
 
 ###Put the unique word_union into {} dict type means:{a,b,c...}
 
-char_indices=dict((char,chars.index(char))for char in chars)
+print('Encodeing to vectorization words one-hot encoding')
 
-print('Encodeing to vectorization words(one-hot encoding')
-
-x=np.zeros((len(sentences),max_word_union,len(chars)),dtype=np.bool)
-
-y=np.zeros((len(sentences),len(chars)),dtype=np.bool)
-
+x = np.zeros((len(sentences), max_word_union, len(chars)), dtype=np.bool)
+y = np.zeros((len(sentences), len(chars)), dtype=np.bool)
+for i, sentence in enumerate(sentences):
+    for t, char in enumerate(sentence):
+        x[i, t, char_indices[char]] = 1
+    y[i, char_indices[next_chars[i]]] = 1
 print("The shape of x:",x.shape)
 
 print('The shape of y:',y.shape)
 
-for i,sentences in enumerate(sentences):
-    
-    for t,char in enumerate(sentences):
-        
-        x[i,t,char_indices[char]]=1
-        
-    y[i,char_indices[next_chars[i]]]=1
-
 ###Create the Neural Network###
+import keras
 
 from keras import layers
 
-from keras import models
 
 
 model=keras.models.Sequential()
@@ -93,13 +97,13 @@ model.add(layers.Dense(len(chars),activation='softmax'))
 
 optimizer = keras.optimizers.RMSprop(lr=0.01)
 
-model.compile(optimizer=optimizer,loss='categorical_crossentropy')
+model.compile(loss='categorical_crossentropy',optimizer=optimizer)
 
 def sample(predicts,temperature=1.0):
     
     predicts=np.asarray(predicts).astype('float64')
     
-    predicts=np.log(predicts)/temperature
+    predicts=np.log(predicts) / temperature
     
     exp_predicts=np.exp(predicts)
     
@@ -109,35 +113,39 @@ def sample(predicts,temperature=1.0):
     
     return np.argmax(probas)
 
-import random
-import sys
+def on_epoch_end(epoch, _):
+    # Function invoked at end of each epoch. Prints generated text.
+    print()
+    print('-----epoch:', epoch)
 
-for epoch in range(1,60):
-    print('epochs:',epoch)
-    model.fit(x,
-              y,
-              batch_size=128,
-              epochs=1)
-   #Random choose the certern 60 word_union of article
-    start_index=random.randint(0,len(text)-max_word_union-1)
-    generated_text=text[start_index:start_index+max_word_union]
-    print('---The random of initial word_sentence:"'+generated_text+'"')
-    for temperature in [0.5]:
-        sys.stdout.write(generated_text)
-        #each temperature of generator 5oo word_union
+    start_index = random.randint(0, len(text) - max_word_union - 1)
+    for diversity in [0.2, 0.5, 1.0, 1.2]:
+        print('----- temperature:', diversity)
+
+        generated = ''
+        sentence = text[start_index: start_index + max_word_union]
+        generated += sentence
+        print('---The random of initial word_sentence: "' + sentence + '"')
+        sys.stdout.write(generated)
+
         for i in range(400):
-            sampled=np.zeros((1,max_word_union,len(chars)))
-            
-            for t,char in enumerate(generated_text):
-               
-                sampled[0,t,char_indices[char]]
-            
-            #Generate the word_union of probability
-            predicts=model.predict(sampled,verbose=0)[0]
-            next_index=sample(predicts,temperature)
-            next_char=chars[next_index]
-            generated_text+=next_char
-            generated_text=generated_text[1:]
-            sys.stdout.write(next_char)
-            
+            x_pred = np.zeros((1, max_word_union, len(chars)))
+            for t, char in enumerate(sentence):
+                x_pred[0, t, char_indices[char]] = 1.
 
+            preds = model.predict(x_pred, verbose=0)[0]
+            next_index = sample(preds, diversity)
+            next_char = indices_char[next_index]
+
+            sentence = sentence[1:] + next_char
+
+            sys.stdout.write(next_char)
+            sys.stdout.flush()
+        print()
+
+print_callback = LambdaCallback(on_epoch_end=on_epoch_end)
+
+model.fit(x, y,
+          batch_size=128,
+          epochs=60,
+          callbacks=[print_callback])
