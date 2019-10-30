@@ -103,7 +103,7 @@ def sample(predicts,temperature=1.0):
     
     predicts=np.asarray(predicts).astype('float64')
     
-    predicts=np.log(predicts) / temperature
+     predicts=np.log(predicts) / temperature
     
     exp_predicts=np.exp(predicts)
     
