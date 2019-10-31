@@ -68,7 +68,7 @@ from keras import layers
 
 model=models.Sequential()
 
-#輸入層是隱藏層
+#輸入層
 
 model.add(layers.Dense(64, 
                        activation='relu',
@@ -78,7 +78,7 @@ model.add(layers.Dense(64,
 
 model.add(layers.Dense(64,
                        activation='relu',
-                       kernel_regularizer=regularizers.l1_l2(l1=0.001,l2=0.001)))
+                       ))
 
 #dropout64位元中的三個神經元
 
@@ -95,19 +95,19 @@ model.compile(optimizer='rmsprop',
 
 #取輸入資料的前10000個做為驗證資料集。
 
-x_val=x_train[:10000]
+x_val=x_train[:3000]
 
 #輸入資料的第10000個開始才是訓練資料。
 
-partial_x_train=x_train[10000:]
+partial_x_train=x_train[3000:]
 
 #對應的，取標籤的前10000個做為驗證標籤。
 
-y_val=y_train[:10000]
+y_val=y_train[:3000]
 
 #從標籤的第10000個開始才是訓練資料的標籤。
 
-partial_y_train=y_train[10000:]
+partial_y_train=y_train[3000:]
 
 #呼叫fit()開始訓練(使用partial_x_train輸入資料，partial_y_train標籤，20個訓練週期，一次batch使用512筆資料)，同時傳入validation set的資料即標籤。
 

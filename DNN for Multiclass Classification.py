@@ -55,8 +55,10 @@ model.add(layers.Dense(64,
 
 #隱藏層
 
-model.add(layers.Dense(64,
+model.add(layers.Dense(4
+                       ,
                        activation='relu'))
+
 
 #輸出層
 
@@ -69,15 +71,15 @@ model.compile(optimizer='rmsprop',
 
 x_val=x_train[:1000]
 
-#輸入資料的第10000個開始才是訓練資料。
+#輸入資料的第1000個開始才是訓練資料。
 
 partial_x_train=x_train[1000:]
 
-#對應的，取標籤的前10000個做為驗證標籤。
+#對應的，取標籤的前1000個做為驗證標籤。
 
 y_val=one_hot_train_labels[:1000]
 
-#從標籤的第10000個開始才是訓練資料的標籤。
+#從標籤的第1000個開始才是訓練資料的標籤。
 
 partial_y_train=one_hot_train_labels[1000:]
 

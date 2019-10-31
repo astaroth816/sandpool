@@ -22,8 +22,8 @@ result_prefix = "output"
 iterations = 10
 
 # 原圖與風格圖佔output比重
-content_weight = 0.025
-style_weight = 1.0
+content_weight = 1.0
+style_weight = 1000
 # 損失總差異預設值
 total_variation_weight = 1.0
 
