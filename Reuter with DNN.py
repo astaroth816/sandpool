@@ -1,40 +1,32 @@
-# -*- coding: utf-8 -*-
-"""
-
-@author: andy3
-
-"""
-
-
-
 ###################################################
 #
-###########The binary-classifical problem##########
+###########The multi-classifical problem##########
 #
-#Use DNN to divide the comment of movie which is good or bad though IMDB datasets.
-#IMDB includes the 25000 comment with 50 percent of positive comment and 50 percent of negative comment.
+#Reuters Newswire Topics Classification using DNN on Deep Learning.
+#
+#Reuter's datasets includes the 8982 train_data and 2246 test_data.
 #
 #
 #
 #
 #
 ###################################################
+
+
 
 ###Prepare the train_data and test_data for fitting the NN model.###
 
-#Download the imdb from keras's package.
-from keras.datasets import imdb
+#Download the reuters datasets from keras's package.
+from keras.datasets import reuters
 
-(train_data,train_labels),(test_data,test_labels)=imdb.load_data(num_words=10000)
+(train_data,train_labels),(test_data,test_labels)=reuters.load_data(num_words=10000)
 
-#Use the one-hot encoding to encode the words.
+#Use the one-hot encoding to encode the train_data and test_data.
 import numpy as np
 
-def vectorize_sequences(sequences,
-                        dimension=10000):
+def vectorize_sequences(sequences,dimension=10000):
 
-    results=np.zeros((len(sequences),
-                      dimension))
+    results=np.zeros((len(sequences),dimension))
 
     for i, sequence in enumerate(sequences):
 
@@ -46,37 +38,48 @@ train_data=vectorize_sequences(train_data)
 
 test_data=vectorize_sequences(test_data)
 
-train_labels=np.asarray(train_labels).astype('float32')
+#Use the one-hot encoding to encode the train_labels and test_labels.
+def vectorize_sequences(labels,dimension=46):
 
-test_labels=np.asarray(test_labels).astype('float32')
+    results=np.zeros((len(labels),dimension))
+
+    for i, label in enumerate(labels):
+
+        results[i,label]=1.
+
+    return results
+
+train_labels=vectorize_sequences(train_labels)
+
+test_labels=vectorize_sequences(test_labels)
 
 ###Bulid the NN models with sequenctial method###
 from keras import models
+
 from keras import layers
 
-#The Sequential method.
 model=models.Sequential()
 
-model.add(layers.Dense(16, 
+model.add(layers.Dense(64,
                        activation='relu',
                        input_shape=(10000,)
                        )
-        )
-
-model.add(layers.Dense(16,
-                       activation='relu',
+    )
+    
+model.add(layers.Dense(64,
+                       activation='relu'
                        )
-        )
-
-#The binary classifical problem,so we use sigmoid with 1 NN union to achieve the purpose.
-model.add(layers.Dense(1,
-                       activation='sigmoid'
+    )
+    
+#The multi-classifical problem,so we use softmax with 46 NN union to achieve the purpose.
+model.add(layers.Dense(46,
+                       activation='softmax'
                        )
-        )
-
+    )
+    
 #Compile the model
 model.compile(optimizer='rmsprop',
-              loss='binary_crossentropy',
+              loss='categorical_crossentropy',
               metrics=['acc'])
 
 #Make the first 1000 train_data as validation_data.
@@ -119,8 +122,7 @@ plt.plot(epochs,
 plt.plot(epochs,
          val_loss_values,
          'b',
-         label='Valadation loss'
-         )
+         label='Valadation loss')
 
 plt.title('Training and validation loss')
 
@@ -141,14 +143,12 @@ val_acc=history_dict['val_acc']
 plt.plot(epochs,
          acc,
          'bo',
-         label='Training accuracy'
-         )
+         label='Training accuracy')
 
 plt.plot(epochs,
          val_acc,
          'b',
-         label='Valadation accccuracy'
-         )
+         label='Valadation accccuracy')
 
 plt.title('Training and validation accuracy')
 
