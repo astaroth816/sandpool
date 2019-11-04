@@ -8,7 +8,7 @@ Created on Sun Sep 29 09:57:37 2019
 ###################################################
 #
 #
-#The first nerual netwrok
+#The first nerual netwrok- DNN_for_MNIST
 #
 #
 ###################################################
