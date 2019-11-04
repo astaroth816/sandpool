@@ -2,7 +2,7 @@
 #
 ###########The multi-classifical problem##########
 #
-#Use Dense layers to classify the subject of news from Reuter's datasets,we will classify to divide the news though NN.
+#Reuters Newswire Topics Classification using DNN on Deep Learning.
 #
 #Reuter's datasets includes the 8982 train_data and 2246 test_data.
 #

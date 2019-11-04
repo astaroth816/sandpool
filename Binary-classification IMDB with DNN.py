@@ -11,8 +11,7 @@
 #
 ###########The binary-classifical problem##########
 #
-#Use Dense layers to comment the movie of review from IMDB,we will achieve to divide the comment though NN in.
-#
+#Use DNN to divide the comment of movie which is good or bad though IMDB datasets.
 #IMDB includes the 25000 comment with 50 percent of positive comment and 50 percent of negative comment.
 #
 #
