@@ -1,0 +1,41 @@
+The average of model_1_50 validation_accuracy: 0.06202605254948139
+
+The average of model_1_100 validation_accuracy:0.06134020555764437
+
+The average of model_1_150 validation_accuracy: 0.062391211092472074
+
+The average of model_1_200 validation_accuracy: 0.061403355188667776
+
+The average of model_1_250 validation_accuracy: 0.06116325370967388
+
+The average of model_2_50 validation_accuracy: 0.06265156604349613
+
+The average of model_2_100 validation_accuracy: 0.06144620385020971
+
+The average of model_2_150 validation_accuracy: 0.06116191167384386
+
+The average of model_2_200 validation_accuracy: 0.06156295072287321
+
+The average of model_2_250 validation_accuracy: 0.06153969224542379
+
+The average of model_3_50 validation_accuracy: 0.06106214188039303
+
+The average of model_3_100 validation_accuracy: 0.06139868348836899
+
+The average of model_3_150 validation_accuracy: 0.06150997374206781
+
+The average of model_3_200 validation_accuracy: 0.06147150415927172
+
+The average of model_3_250 validation_accuracy: 0.06137745101004839
+
+The average of model_4_50 validation_accuracy: 0.061708271689713004
+
+The average of model_4_100 validation_accuracy: 0.06113834213465452
+
+The average of model_4_150 validation_accuracy: 0.061304755695164206
+
+The average of model_4_200 validation_accuracy: 0.06180651728063822
+
+The average of model_4_250 validation_accuracy: 0.06299741584807635
+
+
